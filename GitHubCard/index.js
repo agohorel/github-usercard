@@ -121,11 +121,11 @@ function createCard(data) {
   cardProfile.appendChild(cardUrl);
 
   const cardFollowers = document.createElement("p");
-  cardFollowers.textContent = `Followers: ${followers}`;
+  cardFollowers.textContent = `Followers: ${followers.toLocaleString()}`;
   cardInfo.appendChild(cardFollowers);
 
   const cardFollowing = document.createElement("p");
-  cardFollowing.textContent = `Following: ${following}`;
+  cardFollowing.textContent = `Following: ${following.toLocaleString()}`;
   cardInfo.appendChild(cardFollowing);
 
   const cardBio = document.createElement("p");
