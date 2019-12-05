@@ -18,7 +18,7 @@ function callApiAndCreateCard(user) {
     .then(response => {
       profile = response.data;
       return axios
-        .get(response.data["repos_url"], options)
+        .get(`${response.data.repos_url}?per_page=1000`, options)
         .then(response => (repos = response))
         .catch(err => console.error(err));
     })
@@ -26,7 +26,7 @@ function callApiAndCreateCard(user) {
       console.log(repos, profile);
       document
         .querySelector(".container .cards")
-        .appendChild(createCard(profile));
+        .appendChild(createCard(profile, repos));
     })
     .catch(err => console.error(err));
 }
@@ -94,7 +94,7 @@ followersArray.map(user => {
   bigknell
 */
 
-function createCard(data) {
+function createCard(data, repos) {
   const {
     avatar_url,
     name,
@@ -152,6 +152,10 @@ function createCard(data) {
   const cardBio = document.createElement("p");
   cardBio.textContent = bio === null ? null : `Bio: ${bio}`;
   cardInfo.appendChild(cardBio);
+
+  const numRepos = document.createElement("p");
+  numRepos.textContent = `No. of repos: ${repos.data.length}`;
+  cardInfo.appendChild(numRepos);
 
   return component;
 }
