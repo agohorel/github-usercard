@@ -3,12 +3,16 @@
            https://api.github.com/users/<your name>
 */
 
-const response = axios
-  .get("https://api.github.com/users/agohorel")
-  .then(response =>
-    document.querySelector(".container .cards").appendChild(createCard(response.data))
-  )
-  .catch(err => console.error(err));
+function callApiAndCreateCard(user) {
+  axios
+    .get(`https://api.github.com/users/${user}`)
+    .then(response =>
+      document
+        .querySelector(".container .cards")
+        .appendChild(createCard(response.data))
+    )
+    .catch(err => console.error(err));
+}
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -31,7 +35,18 @@ const response = axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "agohorel",
+  "gregtemp",
+  "REAS",
+  "benfry",
+  "lmccart",
+  "shiffman"
+];
+
+followersArray.map(user => {
+  callApiAndCreateCard(user);
+});
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
