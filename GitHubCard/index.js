@@ -115,9 +115,13 @@ function createCard(data) {
 
   const cardProfile = document.createElement("p");
   cardProfile.textContent = "Profile: ";
+  cardInfo.appendChild(cardProfile);
 
   const cardUrl = document.createElement("a");
   cardUrl.href = url;
+  cardUrl.setAttribute("target", "_blank");
+  cardUrl.setAttribute("rel", "noopener", "noreferrer");
+  cardUrl.textContent = "Github";
   cardProfile.appendChild(cardUrl);
 
   const cardFollowers = document.createElement("p");
