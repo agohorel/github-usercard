@@ -5,7 +5,9 @@
 
 const response = axios
   .get("https://api.github.com/users/agohorel")
-  .then(response => document.body.appendChild(createCard(response.data)))
+  .then(response =>
+    document.querySelector(".container").appendChild(createCard(response.data))
+  )
   .catch(err => console.error(err));
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
