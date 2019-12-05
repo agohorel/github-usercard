@@ -3,14 +3,33 @@
            https://api.github.com/users/<your name>
 */
 
+import { token } from "./auth.js";
+
 function callApiAndCreateCard(user) {
+  let repos, profile;
   axios
-    .get(`https://api.github.com/users/${user}`)
-    .then(response =>
+    .get(`https://api.github.com/users/${user}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      profile = response.data;
+      return axios
+        .get(response.data["repos_url"], {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+        .then(response => (repos = response))
+        .catch(err => console.error(err));
+    })
+    .then(response => {
+      console.log(repos, profile);
       document
         .querySelector(".container .cards")
-        .appendChild(createCard(response.data))
-    )
+        .appendChild(createCard(profile));
+    })
     .catch(err => console.error(err));
 }
 
@@ -36,12 +55,12 @@ function callApiAndCreateCard(user) {
 */
 
 const followersArray = [
-  "agohorel",
-  "gregtemp",
-  "REAS",
-  "benfry",
-  "lmccart",
-  "shiffman"
+  "agohorel"
+  // "gregtemp",
+  // "REAS",
+  // "benfry",
+  // "lmccart",
+  // "shiffman"
 ];
 
 followersArray.map(user => {
