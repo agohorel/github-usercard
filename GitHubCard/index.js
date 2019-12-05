@@ -3,6 +3,11 @@
            https://api.github.com/users/<your name>
 */
 
+const response = axios
+  .get("https://api.github.com/users/agohorel")
+  .then(response => document.body.appendChild(createCard(response.data)))
+  .catch(err => console.error(err));
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -29,6 +34,7 @@ const followersArray = [];
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
+
 <div class="card">
   <img src={image url of user} />
   <div class="card-info">
@@ -53,3 +59,61 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function createCard(data) {
+  const {
+    avatar_url,
+    name,
+    login: username,
+    location,
+    html_url: url,
+    followers,
+    following,
+    bio
+  } = data;
+  const component = document.createElement("div");
+  component.classList.add("card");
+
+  const img = document.createElement("img");
+  img.src = avatar_url;
+  component.appendChild(img);
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+  component.appendChild(cardInfo);
+
+  const cardName = document.createElement("h3");
+  cardName.classList.add("name");
+  cardName.textContent = name;
+  cardInfo.appendChild(cardName);
+
+  const cardUserName = document.createElement("p");
+  cardUserName.classList.add("username");
+  cardUserName.textContent = username;
+  cardInfo.appendChild(cardUserName);
+
+  const cardLocation = document.createElement("p");
+  cardLocation.textContent = location;
+  cardInfo.appendChild(cardLocation);
+
+  const cardProfile = document.createElement("p");
+  cardProfile.textContent = "Profile: ";
+
+  const cardUrl = document.createElement("a");
+  cardUrl.href = url;
+  cardProfile.appendChild(cardUrl);
+
+  const cardFollowers = document.createElement("p");
+  cardFollowers.textContent = `Followers: ${followers}`;
+  cardInfo.appendChild(cardFollowers);
+
+  const cardFollowing = document.createElement("p");
+  cardFollowing.textContent = `Following: ${following}`;
+  cardInfo.appendChild(cardFollowing);
+
+  const cardBio = document.createElement("p");
+  cardBio.textContent = `Bio: ${bio}`;
+  cardInfo.appendChild(cardBio);
+
+  return component;
+}
