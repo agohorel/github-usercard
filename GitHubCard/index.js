@@ -129,7 +129,7 @@ function createCard(data) {
   cardInfo.appendChild(cardFollowing);
 
   const cardBio = document.createElement("p");
-  cardBio.textContent = `Bio: ${bio}`;
+  cardBio.textContent = bio === null ? null : `Bio: ${bio}`;
   cardInfo.appendChild(cardBio);
 
   return component;
