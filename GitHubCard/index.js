@@ -6,7 +6,7 @@
 const response = axios
   .get("https://api.github.com/users/agohorel")
   .then(response =>
-    document.querySelector(".container").appendChild(createCard(response.data))
+    document.querySelector(".container .cards").appendChild(createCard(response.data))
   )
   .catch(err => console.error(err));
 
