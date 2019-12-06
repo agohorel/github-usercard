@@ -157,5 +157,10 @@ function createCard(data, repos) {
   numRepos.textContent = `No. of repos: ${repos.data.length}`;
   cardInfo.appendChild(numRepos);
 
+  const calendar = document.createElement("div");
+  calendar.classList.add("calendar-container");
+  component.appendChild(calendar);
+  GitHubCalendar(calendar, username, { responsive: true });
+
   return component;
 }

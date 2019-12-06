@@ -95,6 +95,7 @@ body {
   width: 100%;
   padding: 20px;
   display: flex;
+  flex-wrap: wrap;
   border-radius: 5px;
   box-shadow: 0 1px 6px -2px #000;
   background-color: #FFF;
@@ -102,8 +103,10 @@ body {
 }
 
 .card img {
-  width: 150px;
-  height: 150px;
+  /* width: 150px;
+  height: 150px; */
+  width: 25%;
+  height: auto;
   border-radius: 3px;
   margin-right: 20px;
 }
@@ -123,5 +126,11 @@ body {
   margin: 3px 0 10px;
 }
 
+.card-info {
+  max-width: 70%;
+}
 
-
+.calendar-container {
+  margin: 2rem 0 0 0;
+  width: 100%;
+}
