@@ -3,6 +3,34 @@
            https://api.github.com/users/<your name>
 */
 
+import { token } from "./auth.js";
+
+let options = {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+};
+
+function callApiAndCreateCard(user) {
+  let repos, profile;
+  axios
+    .get(`https://api.github.com/users/${user}`, options)
+    .then(response => {
+      profile = response.data;
+      return axios
+        .get(`${response.data.repos_url}?per_page=1000`, options)
+        .then(response => (repos = response))
+        .catch(err => console.error(err));
+    })
+    .then(response => {
+      console.log(repos, profile);
+      document
+        .querySelector(".container .cards")
+        .appendChild(createCard(profile, repos));
+    })
+    .catch(err => console.error(err));
+}
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,10 +52,22 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "agohorel",
+  "gregtemp",
+  "REAS",
+  "benfry",
+  "lmccart",
+  "shiffman"
+];
+
+followersArray.map(user => {
+  callApiAndCreateCard(user);
+});
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
+
 
 <div class="card">
   <img src={image url of user} />
@@ -53,3 +93,74 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function createCard(data, repos) {
+  const {
+    avatar_url,
+    name,
+    login: username,
+    location,
+    html_url: url,
+    followers,
+    following,
+    bio
+  } = data;
+  const component = document.createElement("div");
+  component.classList.add("card");
+
+  const img = document.createElement("img");
+  img.src = avatar_url;
+  component.appendChild(img);
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+  component.appendChild(cardInfo);
+
+  const cardName = document.createElement("h3");
+  cardName.classList.add("name");
+  cardName.textContent = name;
+  cardInfo.appendChild(cardName);
+
+  const cardUserName = document.createElement("p");
+  cardUserName.classList.add("username");
+  cardUserName.textContent = username;
+  cardInfo.appendChild(cardUserName);
+
+  const cardLocation = document.createElement("p");
+  cardLocation.textContent = location;
+  cardInfo.appendChild(cardLocation);
+
+  const cardProfile = document.createElement("p");
+  cardProfile.textContent = "Profile: ";
+  cardInfo.appendChild(cardProfile);
+
+  const cardUrl = document.createElement("a");
+  cardUrl.href = url;
+  cardUrl.setAttribute("target", "_blank");
+  cardUrl.setAttribute("rel", "noopener", "noreferrer");
+  cardUrl.textContent = "Github";
+  cardProfile.appendChild(cardUrl);
+
+  const cardFollowers = document.createElement("p");
+  cardFollowers.textContent = `Followers: ${followers.toLocaleString()}`;
+  cardInfo.appendChild(cardFollowers);
+
+  const cardFollowing = document.createElement("p");
+  cardFollowing.textContent = `Following: ${following.toLocaleString()}`;
+  cardInfo.appendChild(cardFollowing);
+
+  const cardBio = document.createElement("p");
+  cardBio.textContent = bio === null ? null : `Bio: ${bio}`;
+  cardInfo.appendChild(cardBio);
+
+  const numRepos = document.createElement("p");
+  numRepos.textContent = `No. of repos: ${repos.data.length}`;
+  cardInfo.appendChild(numRepos);
+
+  const calendar = document.createElement("div");
+  calendar.classList.add("calendar-container");
+  component.appendChild(calendar);
+  GitHubCalendar(calendar, username, { responsive: true });
+
+  return component;
+}
